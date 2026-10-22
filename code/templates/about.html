@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - ANTI-MONEY LAUNDERING USING CRYPTOGRAPHY</title>
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/png">
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1,
+        h2 {
+            color: #751470;
+        }
+
+        header {
+            background-color: #78c45c;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #9e111f;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #1abc9c;
+        }
+
+        /* Section styling */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .intro {
+            background-color: #2980b9;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            animation: fadeIn 2s ease;
+        }
+
+        .intro h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            padding: 40px 0;
+            text-align: center;
+            background-color: #ecf0f1;
+        }
+
+        .content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .content img {
+            width: 80%;
+            height: auto;
+            margin-top: 30px;
+            border-radius: 10px;
+            animation: zoomIn 2s ease;
+        }
+
+        footer {
+            background-color: #34495e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>ANTI-MONEY LAUNDERING USING CRYPTOGRAPHY</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/Verify">Check</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="intro">
+        <div class="container">
+            <div class="intro-text">
+                <h2>What is Anti-Money Laundering (AML)?</h2>
+                <p>Anti-Money Laundering (AML) refers to the policies and procedures that financial institutions and other regulated entities implement to prevent, detect, and report suspicious activities related to money laundering.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <h2>Why is Anti-Money Laundering Important?</h2>
+            <p>Money laundering is a significant financial crime that involves disguising illegal financial activities as legitimate. It can have serious consequences for the economy and financial institutions. By implementing AML systems, we can safeguard against illicit financial activities, including drug trafficking, terrorism, and corruption.</p>
+
+            <p>Our Anti-Money Laundering system uses cutting-edge cryptography techniques to ensure that all transactions are secure, transparent, and traceable, minimizing the risk of financial crime.</p>
+
+            <img src="{{ url_for('static', filename='a23.jpg') }}" alt="Anti Money Laundering Concept Image">
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Anti-Money Laundering System. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

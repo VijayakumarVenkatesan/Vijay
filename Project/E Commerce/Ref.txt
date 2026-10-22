@@ -1,0 +1,842 @@
+# Spring Boot E-Commerce Backend (Java)
+
+This single-file project listing contains the key files for a minimal but working Spring Boot backend that supports:
+
+- Seller and Customer registration (signup) and login (JWT authentication)
+- Home, Search, Products endpoints
+- View products by brand and category
+- Customers can add products to cart and create orders
+- H2 in-memory database for quick testing
+
+---
+
+// pom.xml
+
+/*
+Paste this into a new Spring Boot Maven project pom.xml. Uses Spring Boot 3.x, Spring Security, JPA, H2.
+*/
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>ecommerce-backend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>ecommerce-backend</name>
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.version>3.1.4</spring.boot.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+---
+
+// src/main/resources/application.yml
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:ecomdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+jwt:
+  secret: mysupersecretjwtkey_change_this
+  expiration-ms: 86400000
+
+server:
+  port: 8080
+
+---
+
+// src/main/java/com/example/ecommerce/EcommerceApplication.java
+
+package com.example.ecommerce;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class EcommerceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EcommerceApplication.class, args);
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/Role.java
+package com.example.ecommerce.model;
+
+public enum Role {
+    CUSTOMER, SELLER, ADMIN
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/User.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    @Column(unique = true)
+    private String email;
+    private String password; // stored hashed
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/Brand.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Brand {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/Category.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/Product.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    @Column(length = 2000)
+    private String description;
+    private Double price;
+    private Integer stock;
+
+    @ManyToOne
+    private Brand brand;
+
+    @ManyToOne
+    private Category category;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/CartItem.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CartItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Product product;
+
+    private Integer quantity;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/OrderEntity.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.Instant;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class OrderEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private User customer;
+
+    private Instant createdAt;
+    private Double totalAmount;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderItem> items;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/model/OrderItem.java
+package com.example.ecommerce.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Product product;
+    private Integer quantity;
+    private Double priceAtPurchase;
+}
+
+---
+
+// src/main/java/com/example/ecommerce/repository/*.java
+
+package com.example.ecommerce.repository;
+
+import com.example.ecommerce.model.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+}
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    List<Product> findByBrand_NameIgnoreCase(String brandName);
+    List<Product> findByCategory_NameIgnoreCase(String categoryName);
+    List<Product> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String t, String d);
+}
+
+@Repository
+public interface BrandRepository extends JpaRepository<Brand, Long> {
+    Optional<Brand> findByName(String name);
+}
+
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Optional<Category> findByName(String name);
+}
+
+@Repository
+public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+    List<CartItem> findByUser_Id(Long userId);
+    Optional<CartItem> findByUser_IdAndProduct_Id(Long userId, Long productId);
+}
+
+@Repository
+public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+    List<OrderEntity> findByCustomer_Id(Long customerId);
+}
+
+---
+
+// src/main/java/com/example/ecommerce/security/SecurityConfig.java
+package com.example.ecommerce.security;
+
+import com.example.ecommerce.service.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@RequiredArgsConstructor
+public class SecurityConfig {
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtFilter jwtFilter;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .authorizeHttpRequests()
+            .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**").permitAll()
+            .anyRequest().authenticated()
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // for H2 console
+        http.headers().frameOptions().disable();
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/security/JwtUtil.java
+package com.example.ecommerce.security;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.util.Date;
+
+@Component
+public class JwtUtil {
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration-ms}")
+    private long jwtExpirationMs;
+
+    private Key key() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
+
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String getUsername(String token) {
+        return Jwts.parserBuilder().setSigningKey(key()).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public boolean validate(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/security/JwtFilter.java
+package com.example.ecommerce.security;
+
+import com.example.ecommerce.service.UserDetailsServiceImpl;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor
+public class JwtFilter extends OncePerRequestFilter {
+    private final JwtUtil jwtUtil;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            if (jwtUtil.validate(token)) {
+                String username = jwtUtil.getUsername(token);
+                UserDetails ud = userDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+        filterChain.doFilter(request, response);
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/service/UserDetailsServiceImpl.java
+package com.example.ecommerce.service;
+
+import com.example.ecommerce.model.User;
+import com.example.ecommerce.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), List.of(authority));
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/controller/AuthController.java
+package com.example.ecommerce.controller;
+
+import com.example.ecommerce.model.Role;
+import com.example.ecommerce.model.User;
+import com.example.ecommerce.repository.UserRepository;
+import com.example.ecommerce.security.JwtUtil;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthController {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody Map<String, String> body) {
+        String name = body.get("name");
+        String email = body.get("email");
+        String password = body.get("password");
+        String roleStr = body.getOrDefault("role", "CUSTOMER");
+
+        if (userRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email already in use"));
+        }
+
+        User u = User.builder()
+                .name(name)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .role(Role.valueOf(roleStr.toUpperCase()))
+                .build();
+        userRepository.save(u);
+        return ResponseEntity.ok(Map.of("msg", "registered"));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String password = body.get("password");
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        String token = jwtUtil.generateToken(email);
+        return ResponseEntity.ok(Map.of("token", token));
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/controller/ProductController.java
+package com.example.ecommerce.controller;
+
+import com.example.ecommerce.model.*;
+import com.example.ecommerce.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/products")
+@RequiredArgsConstructor
+public class ProductController {
+    private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
+    private final CategoryRepository categoryRepository;
+
+    @GetMapping("/all")
+    public List<Product> all() {
+        return productRepository.findAll();
+    }
+
+    @GetMapping("/brand/{name}")
+    public List<Product> byBrand(@PathVariable String name) {
+        return productRepository.findByBrand_NameIgnoreCase(name);
+    }
+
+    @GetMapping("/category/{name}")
+    public List<Product> byCategory(@PathVariable String name) {
+        return productRepository.findByCategory_NameIgnoreCase(name);
+    }
+
+    @GetMapping("/search")
+    public List<Product> search(@RequestParam String q) {
+        return productRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(q, q);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody Map<String, String> body) {
+        // simple create that will create brand/category if missing
+        Brand brand = brandRepository.findByName(body.get("brand")).orElseGet(() -> brandRepository.save(Brand.builder().name(body.get("brand")).build()));
+        Category cat = categoryRepository.findByName(body.get("category")).orElseGet(() -> categoryRepository.save(Category.builder().name(body.get("category")).build()));
+        Product p = Product.builder()
+                .title(body.get("title"))
+                .description(body.get("description"))
+                .price(Double.parseDouble(body.get("price")))
+                .stock(Integer.parseInt(body.getOrDefault("stock", "0")))
+                .brand(brand)
+                .category(cat)
+                .build();
+        productRepository.save(p);
+        return ResponseEntity.ok(p);
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/controller/CartController.java
+package com.example.ecommerce.controller;
+
+import com.example.ecommerce.model.*;
+import com.example.ecommerce.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/cart")
+@RequiredArgsConstructor
+public class CartController {
+    private final CartItemRepository cartItemRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addToCart(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> body) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        Long productId = Long.parseLong(body.get("productId"));
+        Integer qty = Integer.parseInt(body.getOrDefault("quantity", "1"));
+        Product p = productRepository.findById(productId).orElseThrow();
+        CartItem existing = cartItemRepository.findByUser_IdAndProduct_Id(user.getId(), productId).orElse(null);
+        if (existing != null) {
+            existing.setQuantity(existing.getQuantity() + qty);
+            cartItemRepository.save(existing);
+            return ResponseEntity.ok(existing);
+        }
+        CartItem item = CartItem.builder().user(user).product(p).quantity(qty).build();
+        cartItemRepository.save(item);
+        return ResponseEntity.ok(item);
+    }
+
+    @GetMapping("/my")
+    public List<CartItem> myCart(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        return cartItemRepository.findByUser_Id(user.getId());
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> remove(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Map<String, String> body) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        Long itemId = Long.parseLong(body.get("itemId"));
+        cartItemRepository.deleteById(itemId);
+        return ResponseEntity.ok(Map.of("msg", "removed"));
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/controller/OrderController.java
+package com.example.ecommerce.controller;
+
+import com.example.ecommerce.model.*;
+import com.example.ecommerce.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/orders")
+@RequiredArgsConstructor
+public class OrderController {
+    private final CartItemRepository cartItemRepository;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkout(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        List<CartItem> items = cartItemRepository.findByUser_Id(user.getId());
+        if (items.isEmpty()) return ResponseEntity.badRequest().body("Cart empty");
+
+        List<OrderItem> orderItems = items.stream().map(ci -> OrderItem.builder()
+                .product(ci.getProduct())
+                .quantity(ci.getQuantity())
+                .priceAtPurchase(ci.getProduct().getPrice())
+                .build()).collect(Collectors.toList());
+
+        double total = orderItems.stream().mapToDouble(oi -> oi.getPriceAtPurchase() * oi.getQuantity()).sum();
+
+        OrderEntity order = OrderEntity.builder()
+                .customer(user)
+                .createdAt(Instant.now())
+                .items(orderItems)
+                .totalAmount(total)
+                .build();
+
+        orderRepository.save(order);
+        // clear cart
+        cartItemRepository.deleteAll(items);
+        return ResponseEntity.ok(order);
+    }
+
+    @GetMapping("/my")
+    public List<OrderEntity> myOrders(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        return orderRepository.findByCustomer_Id(user.getId());
+    }
+}
+
+---
+
+// src/main/java/com/example/ecommerce/bootstrap/DataLoader.java
+package com.example.ecommerce.bootstrap;
+
+import com.example.ecommerce.model.*;
+import com.example.ecommerce.repository.*;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class DataLoader {
+    private final UserRepository userRepository;
+    private final BrandRepository brandRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void load() {
+        if (userRepository.count() == 0) {
+            userRepository.save(User.builder().name("Alice Buyer").email("alice@example.com").password(passwordEncoder.encode("pass123")).role(Role.CUSTOMER).build());
+            userRepository.save(User.builder().name("Bob Seller").email("bob@example.com").password(passwordEncoder.encode("pass123")).role(Role.SELLER).build());
+        }
+        Brand b1 = brandRepository.save(Brand.builder().name("Acme").build());
+        Category c1 = categoryRepository.save(Category.builder().name("Electronics").build());
+        productRepository.save(Product.builder().title("Acme Phone").description("A good phone").price(19999.0).stock(50).brand(b1).category(c1).build());
+    }
+}
+
+---
+
+# Running the project
+
+1. Create a new Maven project and paste the `pom.xml`.
+2. Add the Java files above into the package `com.example.ecommerce` with their paths.
+3. `mvn spring-boot:run` or run from your IDE.
+4. H2 console is available at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:ecomdb`).
+5. Swagger/OpenAPI UI is available at `http://localhost:8080/swagger-ui/index.html` (if the springdoc dependency resolves).
+
+# Key API endpoints (summary)
+
+- POST /api/auth/register  {name,email,password,role}
+- POST /api/auth/login     {email,password} -> returns JWT token
+- GET  /api/products/all
+- GET  /api/products/search?q=phone
+- GET  /api/products/brand/{name}
+- GET  /api/products/category/{name}
+- POST /api/products/create  (create product)
+- POST /api/cart/add    (Authorization: Bearer <token>) {productId,quantity}
+- GET  /api/cart/my     (Authorization)
+- POST /api/orders/checkout  (Authorization)
+- GET  /api/orders/my   (Authorization)
+
+---
+
+This code is a compact, ready-to-run starting point. You can extend validation, error handling, DTO mapping, seller-only product creation checks, pagination, and richer search/filtering.
+

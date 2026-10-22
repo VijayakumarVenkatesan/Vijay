@@ -1,0 +1,32 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.outer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inner{
+    width: 30%;
+    height: 50%;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px gray;
+    background-color: blue;
+    color: white;
+    margin: auto;
+    margin-top: 15%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.inner h1{
+    text-align: center;
+}
+.inner p{
+    margin-top: 10px;
+}
+::-webkit-scrollbar{
+    display: none;
+}

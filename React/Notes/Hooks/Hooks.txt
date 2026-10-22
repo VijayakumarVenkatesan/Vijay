@@ -1,0 +1,177 @@
+| Hook                    | Purpose                                 |
+| ----------------------- | --------------------------------------- |
+| **useState**            | Manage state                            |
+| **useEffect**           | Handle side effects (API calls, timers) |
+| **useContext**          | Use React Context                       |
+| **useRef**              | Access DOM or persist values            |
+| **useMemo**             | Memoize values                          |
+| **useCallback**         | Memoize functions                       |
+| **useReducer**          | Advanced state logic                    |
+| **useLayoutEffect**     | Synchronous effect before paint         |
+| **useImperativeHandle** | Custom ref handling                     |
+
+🧩 What Are Hooks in React?
+
+Hooks are special functions that let you use React features (like state, lifecycle, etc.) inside functional components.
+
+Before hooks, only class components could use features like state and lifecycle methods.
+After hooks (React 16.8+), functional components can do everything classes could — and more — in a simpler way.
+
+⚙️ Commonly Used React Hooks
+
+Let’s go over the most important ones 👇
+
+🪝 1. useState
+
+Used to add state to functional components.
+
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0); // state variable
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+
+✅ useState returns:
+
+The current state value
+
+A function to update it
+
+🪝 2. useEffect
+
+Used to perform side effects — like fetching data, updating DOM, timers, etc.
+
+import { useEffect, useState } from "react";
+
+function DataFetcher() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://api.example.com/users")
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, []); // empty array = run only once (on mount)
+
+  return <div>{data.length} users loaded</div>;
+}
+
+
+✅ useEffect runs after rendering, and the dependency array ([]) controls when it runs.
+
+🪝 3. useContext
+
+Used to access data from React Context API (no need to pass props down manually).
+
+const UserContext = createContext();
+
+function App() {
+  return (
+    <UserContext.Provider value="Vijay">
+      <Child />
+    </UserContext.Provider>
+  );
+}
+
+function Child() {
+  const user = useContext(UserContext);
+  return <h2>Hello, {user}!</h2>;
+}
+
+
+✅ Lets you share global data (like theme, user info) across components.
+
+🪝 4. useRef
+
+Used to get a reference to a DOM element or to store mutable values that don’t cause re-renders.
+
+import { useRef } from "react";
+
+function InputFocus() {
+  const inputRef = useRef();
+
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <>
+      <input ref={inputRef} type="text" />
+      <button onClick={focusInput}>Focus Input</button>
+    </>
+  );
+}
+
+
+✅ useRef gives access to real DOM elements or stores values without triggering re-render.
+
+🪝 5. useMemo
+
+Used to optimize performance by memoizing (caching) computed values.
+
+import { useMemo } from "react";
+
+const result = useMemo(() => expensiveCalculation(num), [num]);
+
+
+✅ Only recalculates when dependencies change — saves time in large apps.
+
+🪝 6. useCallback
+
+Used to memoize functions, so they don’t get recreated unnecessarily on every render.
+
+const handleClick = useCallback(() => {
+  console.log("Clicked");
+}, []);
+
+
+✅ Commonly used with child components to prevent re-rendering.
+
+🪝 7. useReducer
+
+Used for complex state management, as an alternative to useState.
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+
+✅ Similar to Redux logic — great for big apps with complex logic.
+
+🪝 8. useLayoutEffect
+
+Like useEffect, but it runs before the browser paints the screen.
+Used rarely for measuring layout or DOM sizes precisely.
+
+🪝 9. useImperativeHandle
+
+Used with forwardRef to customize what’s exposed when a parent uses a ref on a child component.
+
+💡 Summary Table
+Hook	Purpose
+useState	Manage state
+useEffect	Handle side effects (API calls, timers)
+useContext	Use React Context
+useRef	Access DOM or persist values
+useMemo	Memoize values
+useCallback	Memoize functions
+useReducer	Advanced state logic
+useLayoutEffect	Synchronous effect before paint
+useImperativeHandle	Custom ref handling
+
+✅ In short:
+Hooks make functional components powerful and clean — no class components needed anymore.

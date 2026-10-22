@@ -1,0 +1,19 @@
+Display:
+
+    Display property used to how an element should be displayed in the UI or webpage.
+
+    1.block:
+    It will make the element start from new line.
+    It will occupy entire parent width.
+    We can customize the width.
+    It will not allow other content in same line.
+
+    2.inline:
+    It will take only content width.
+    It will allow other content in same line.
+    We cannot customie the height, width and padding.
+
+    3.inline-block:
+    It will take only content width.
+    It will allow other content in same line.
+    We can customie the height, width and padding.

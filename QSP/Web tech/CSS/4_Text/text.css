@@ -1,0 +1,16 @@
+header{
+    background-color: yellow;
+    padding: 20px;
+    border-radius: 20px;
+}
+header h1{
+    color: red;
+    text-align: center;
+    text-decoration: underline;
+}
+header:hover{
+    text-shadow: 5px 5px 10px white;
+    background-color: black;
+    color: yellow;
+    box-shadow: 5px 5px 10px gray;
+}

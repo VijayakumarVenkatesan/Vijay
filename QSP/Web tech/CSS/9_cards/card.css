@@ -1,0 +1,25 @@
+main{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 170px;
+}.cards{
+    width: 25%;
+    text-align: center;
+    background: black;
+    color: white;
+    border-radius: 15px;
+    padding: 25px;
+}
+button{
+    background-color: rgb(245, 70, 137);
+    color: white;
+    width: 30%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+}
+img{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}

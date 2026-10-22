@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.outer{
+    background-color: rgb(11, 213, 89);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inner{
+    box-shadow: 5px 5px 10px black;
+    display: block;
+    height: 320px;
+    width: 320px;
+}
+.white{
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+}
+.black{
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-color: black;
+}
+.row{
+    display: flex;
+}

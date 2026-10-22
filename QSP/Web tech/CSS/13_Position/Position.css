@@ -1,0 +1,49 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.outer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(black,rgb(255, 0, 0),black);
+    height: 100vh;
+}
+.inner{
+    height: 80%;
+    width: 80%;
+    background-color: white;
+    position: relative;
+}
+.box{
+    height: 90px;
+    width: 90px;
+}
+#box1{
+    background-color: red;
+    position: absolute;
+}
+#box2{
+    background-color: yellow;
+    position: absolute;
+    right: 0;
+}
+#box3{
+    background-color: blue;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+#box4{
+    background-color: green;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}    
+#box5{
+    background-color: brown;
+    position: absolute;
+    bottom: 0;
+}

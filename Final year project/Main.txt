@@ -1,0 +1,156 @@
+from flask import Flask, render_template, request
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+import networkx as nx
+import matplotlib.pyplot as plt
+import os
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['STATIC_FOLDER'] = 'static'
+
+
+
+# Global storage for processed data
+report_data = {}
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    global report_data
+
+    if request.method == 'POST':
+        file = request.files['file']
+
+        if file and file.filename.endswith('.csv'):
+            df = pd.read_csv(file)
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.csv')
+            df.to_csv(save_path, index=False)
+
+            if 'timestamp' in df.columns:
+                df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+
+            if 'amount' in df.columns and 'sender' in df.columns and 'receiver' in df.columns:
+                model = IsolationForest(contamination=0.1)
+                df['risk_score'] = model.fit_predict(df[['amount']])
+
+                suspicious_receivers = df[df['risk_score'] == -1]['receiver'].unique().tolist()
+                suspicious_senders = df[df['receiver'].isin(suspicious_receivers)]['sender'].unique().tolist()
+
+                receiver_features = (
+                    df.groupby('receiver')
+                    .agg(
+                        unique_senders=('sender', 'nunique'),
+                        transaction_count=('amount', 'count'),
+                        total_amount=('amount', 'sum'),
+                        avg_amount=('amount', 'mean'),
+                        std_amount=('amount', 'std'),
+                        time_span=('timestamp', lambda x: (x.max() - x.min()).total_seconds())
+                    )
+                    .reset_index()
+                )
+
+                sender_frequency = df[df['receiver'].isin(suspicious_receivers)][
+                    'sender'].value_counts().to_frame().reset_index()
+                sender_frequency.columns = ['sender', 'count']
+
+                suspicious_senders_df = df[df['sender'].isin(suspicious_senders)]
+                controller_senders = suspicious_senders_df.groupby('sender').filter(
+                    lambda x: len(x['receiver'].unique()) > 1)['sender'].unique().tolist()
+
+                controller_transactions = df[
+                    (df['sender'].isin(controller_senders)) &
+                    (df['receiver'].isin(suspicious_receivers))
+                    ][
+                    ['transaction_id', 'sender', 'receiver', 'amount', 'timestamp']
+                ]
+
+                # Smurfing pattern detection: acc1 → [acc2, acc3] → accE
+                smurfing_paths = []
+                for sender in df['sender'].unique():
+                    level1 = df[df['sender'] == sender]['receiver'].unique()
+                    for intermediate in level1:
+                        level2_df = df[df['sender'] == intermediate]
+                        for final_receiver in level2_df['receiver'].unique():
+                            smurfing_paths.append((sender, intermediate, final_receiver))
+
+                smurf_df = pd.DataFrame(smurfing_paths, columns=['root_sender', 'middle_sender', 'final_receiver'])
+                smurf_df = smurf_df[smurf_df['root_sender'] != smurf_df['middle_sender']]
+
+                # Dashboard summary
+                total_transactions = len(df)
+                total_amount = df['amount'].sum()
+                most_active_sender = df['sender'].value_counts().idxmax()
+                most_active_receiver = df['receiver'].value_counts().idxmax()
+
+                report_data = {
+                    'receiver_features': receiver_features.to_html(classes='table table-bordered', index=False),
+                    'suspicious_receivers': suspicious_receivers,
+                    'suspicious_senders': suspicious_senders,
+                    'sender_frequency_html': sender_frequency.to_html(classes='table table-bordered', index=False),
+                    'controller_transactions_html': controller_transactions.to_html(classes='table table-bordered', index=False),
+                    'smurf_df_html': smurf_df.to_html(classes='table table-bordered', index=False),
+                    'total_transactions': total_transactions,
+                    'total_amount': total_amount,
+                    'most_active_sender': most_active_sender,
+                    'most_active_receiver': most_active_receiver,
+                    'recent_transactions_html': df.tail(10).to_html(classes='table table-striped', index=False)
+                }
+
+                # Generate and save network graph
+                G = nx.DiGraph()
+                for _, row in df.iterrows():
+                    sender = row['sender']
+                    receiver = row['receiver']
+                    risk = ' (SUSP)' if receiver in suspicious_receivers else ''
+                    G.add_edge(sender, receiver + risk, weight=row['amount'])
+
+                plt.figure(figsize=(12, 8))
+                pos = nx.spring_layout(G, k=0.5)
+                nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=2000, edge_color='gray', font_size=10)
+                edge_labels = nx.get_edge_attributes(G, 'weight')
+                nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+                graph_path = os.path.join(app.config['STATIC_FOLDER'], 'graph.png')
+                plt.savefig(graph_path)
+                plt.close()
+
+                return render_template('upload.html', message='File processed successfully.')
+
+    return render_template('upload.html', message='')
+
+
+@app.route('/fetch')
+def fetch():
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.csv')
+    if not os.path.exists(file_path):
+        return render_template('fetch.html', message='No file uploaded yet.')
+
+    df = pd.read_csv(file_path)
+    all_transactions_html = df.to_html(classes='table table-bordered', index=False)
+
+    return render_template('fetch.html', all_transactions=all_transactions_html)
+
+@app.route('/report')
+def report():
+    if not report_data:
+        return render_template('report.html', message='No data processed yet.')
+    return render_template('report.html', **report_data)
+
+@app.route('/visualize')
+def visualize():
+    return render_template('visualize.html', graph_path='static/graph.png')
+
+@app.route('/dashboard')
+def dashboard():
+    if not report_data:
+        return render_template('dashboard.html', message='No data available. Please upload a file first.')
+    return render_template('dashboard.html', **report_data)
+
+if __name__ == '__main__':
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['STATIC_FOLDER'], exist_ok=True)
+    app.run(debug=True)

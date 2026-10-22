@@ -1,0 +1,184 @@
+To solve **all types of array problems**, you need to master a set of core **concepts**, **patterns**, and **techniques**. Below is a complete list, categorized by topic and level. This roadmap covers everything from basics to advanced.
+
+---
+
+## ✅ **1. Basics (Must Know First)**
+
+These are the building blocks:
+
+* **Array declaration, initialization, traversal**
+* **Indexing and bounds checking**
+* **Common operations**: insert, delete, update
+* **Time and space complexity**
+* **Input/output handling**
+
+---
+
+## 🔁 **2. Traversal and Two Pointers**
+
+Used in a lot of problems:
+
+* Forward and backward traversal
+* **Two pointers** (start & end)
+
+  * Moving toward each other
+  * Moving in the same direction
+* Sliding window technique (fixed & variable size)
+* Prefix sum / suffix sum
+
+**Problems:**
+
+* Reverse array
+* Check if array is palindrome
+* Pair sum equals target
+* Maximum sub array sum (Kadane’s Algorithm)
+
+---
+
+## 🔄 **3. Sorting**
+
+* Bubble, Selection, Insertion, Merge, Quick Sort
+* In-place vs out-of-place
+* Stable vs unstable
+* Time complexity analysis
+
+**Use cases:**
+
+* Sort then apply two pointers
+* Remove duplicates
+* Kth largest/smallest
+
+---
+
+## 🎯 **4. Searching**
+
+* Linear search
+* Binary search (basic to advanced)
+* Search in rotated sorted array
+* Search in 2D matrix
+
+**Practice**:
+
+* Binary search on answer (min/max problems)
+* Find first/last occurrence
+* Count of elements satisfying condition
+
+---
+
+## 🎲 **5. Hashing (HashMap / HashSet)**
+
+* Frequency counting
+* Detect duplicates
+* Longest sub array with sum K
+* Sub array with 0 sum
+* Two Sum problem
+* Majority element (Moore’s Voting Algo)
+
+---
+
+## ♻️ **6. Prefix Sum / Suffix Sum / Difference Array**
+
+* Running totals
+* Range sum queries
+* Range update queries
+* Sub array sum calculations
+* XOR Prefix
+
+---
+
+## 🧩 **7. Pattern-based Problems**
+
+* Kadane’s Algorithm
+* Dutch National Flag problem (3-way partition)
+* Merge Intervals
+* Two Sum / Three Sum / Four Sum
+* Sliding window maximum
+* Monotonic Stack (Next Greater Element)
+
+---
+
+## 🔄 **8. Rotations / Reversals**
+
+* Rotate array left/right by K
+* Reversal algorithm
+* Cyclic replacements
+* Find rotation count in sorted array
+
+---
+
+## 📐 **9. Matrix/2D Array**
+
+* Transpose
+* Rotate 90 degrees
+* Spiral order
+* Search in 2D matrix
+* Dynamic programming with 2D arrays
+
+---
+
+## 🔢 **10. Bit Manipulation (in Array Context)**
+
+* Find unique element (XOR logic)
+* All elements appear twice except one
+* Missing/duplicate numbers
+* Bitmasking for subsets
+
+---
+
+## 🚀 **11. Advanced Techniques**
+
+* Sliding window maximum using deque
+* Monotonic stack/queue
+* Prefix XOR
+* Merge sort tree (for range queries)
+* Segment tree (for advanced range queries)
+* Sparse table (for static range queries)
+
+---
+
+## 🧠 **12. Problem-Solving Techniques**
+
+* Brute force → optimize step-by-step
+* Use constraints wisely
+* Think about edge cases (empty, one element, large K, duplicates)
+* Space vs time tradeoff
+* Dry run examples manually
+* Use helper functions
+
+---
+
+## 🧪 **13. Practice Problem Categories**
+
+1. **Easy**:
+
+   * Find min/max
+   * Reverse array
+   * Count even/odd numbers
+
+2. **Medium**:
+
+   * Subarray sum
+   * Find duplicates
+   * Merge sorted arrays
+
+3. **Hard**:
+
+   * Median of two sorted arrays
+   * Maximum subarray sum in circular array
+   * Longest subarray with K distinct elements
+
+---
+
+## 🔄 **14. Learn from Patterns**
+
+Many problems follow patterns. Practice:
+
+* Two pointers
+* Hashing + prefix
+* Sliding window
+* Sorting + binary search
+* Stack/monotonic behavior
+
+---
+
+Would you like a PDF or Notion/Markdown version of this as a study checklist?

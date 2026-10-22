@@ -1,0 +1,65 @@
+Iterable
+  └── Collection
+        ├── List
+        │     ├── ArrayList             ->Simple as array
+        │     ├── LinkedList            ->Linked list
+        │     └── Vector
+        │           └── Stack
+        ├── Set                         ->Does not allow duplicates
+        │     ├── HashSet               ->Backed by hashmap
+        │     ├── LinkedHashSet         ->Maintains the insertion order
+        │     ├── TreeSet               ->Maintains the sorted order
+        │     └── EnumSet
+        └── Queue                       ->Follows FIFO order
+              ├── PriorityQueue
+              ├── LinkedList
+              └── Deque                 ->Controls at the both end
+                    ├── ArrayDeque
+                    └── LinkedList
+Map (Separate hierarchy)                ->Map the key values pair
+  ├── HashMap                           ->Does not guarantee the order
+  ├── LinkedHashMap                     ->Maintains the insertion order
+  ├── WeakHashMap
+  ├── IdentityHashMap
+  ├── TreeMap                           ->Maintains the sorted order
+  ├── EnumMap
+  └── Hashtable
+        └── Properties
+
+ArrayList:
+    add(e)
+    get(index)
+    size()
+    toArray()
+    isEmpty()
+    remove(index)
+    remove(value)
+        remove the first occurrence of value
+            for integer remove(Integer.valueOf(value))
+    removeAll(collection)
+        remove all the element from the another specified collection
+
+Queue:
+    offer(e)            ->Adds the element at tail
+    poll()              ->returns the head and remove it
+    peek()              ->returns the head but does not remove the head
+    add(e)               ->Same as offer but throws IllegalStateException if queue is full
+    remove()            ->same as poll but throws NoSuchElementException if queue is  empty
+    element()           ->same as peek but throws NoSuchElementException if queue is empty
+
+Dequeue:
+    Operation at head:
+        offerFirst(e)
+        pollFirst()
+        peekFirst()
+        addFirst(e)
+        removeFirst()
+        elementFirst()
+
+    Operation at tail:
+        offerFirst(e)
+        pollFirst()
+        peekFirst()
+        addFirst(e)
+        removeFirst()
+        elementFirst()

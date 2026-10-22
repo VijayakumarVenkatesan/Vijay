@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANTI-MONEY LAUNDERING USING CRYPTOGRAPHY</title>
+    <link rel="icon" href="{{ url_for('static', filename='a1.png') }}" type="image/png">
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1,
+        h2 {
+            color: red;
+        }
+
+        header {
+            background-color: #f5c842;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #1d25cc;
+            text-decoration: none;
+            font-size: 2.2rem;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #1abc9c;
+        }
+
+        /* Section styling */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .intro {
+            background-color: #2980b9;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            animation: fadeIn 2s ease;
+        }
+
+        .intro h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .intro-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            animation: zoomIn 2s ease;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #34495e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>ANTI-MONEY LAUNDERING USING CRYPTOGRAPHY</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/verify">Check</a></li>
+                    <li><a href="/model_performance">Model Performance</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="intro">
+        <div class="container">
+            <div class="intro-text">
+                <h2>Protect Your Transactions</h2>
+                <p>Our Anti-Money Laundering System uses advanced cryptography techniques to ensure secure and transparent transactions. Monitor suspicious activity and prevent illicit financial activities with ease.</p>
+            </div>
+            <div class="intro-image">
+                <!-- Correctly formatted image URL from static folder -->
+                <img src="{{ url_for('static', filename='a123.jpg') }}" alt="Cryptography Image">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Anti-Money Laundering System. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

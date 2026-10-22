@@ -1,0 +1,122 @@
+React Context API clearly. It’s one of the most powerful tools for sharing data across components without passing props manually.
+
+🧩 What is Context API?
+
+Context API allows you to share global data in a React app.
+
+Instead of passing props through multiple layers (prop drilling), you can provide data once and let any child component consume it.
+
+⚙️ How Context API Works
+
+There are 3 main steps:
+
+Create Context
+
+Provide Context
+
+Consume Context
+
+1️⃣ Create Context
+import { createContext } from "react";
+
+export const UserContext = createContext();
+
+
+UserContext is now a context object.
+
+It has a Provider and a Consumer (or you can use useContext hook).
+
+2️⃣ Provide Context
+
+Wrap your component tree with UserContext.Provider and pass a value.
+
+import { UserContext } from "./UserContext";
+
+function App() {
+  const user = { name: "Vijay", role: "Admin" };
+
+  return (
+    <UserContext.Provider value={user}>
+      <Navbar />
+      <Dashboard />
+    </UserContext.Provider>
+  );
+}
+
+
+✅ Now all children of App can access user.
+
+3️⃣ Consume Context
+
+There are two ways to consume it:
+
+a) Using useContext (hook — modern way)
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
+
+function Navbar() {
+  const user = useContext(UserContext);
+  return <h2>Welcome, {user.name}</h2>;
+}
+
+b) Using Consumer (older way)
+import { UserContext } from "./UserContext";
+
+function Navbar() {
+  return (
+    <UserContext.Consumer>
+      {(user) => <h2>Welcome, {user.name}</h2>}
+    </UserContext.Consumer>
+  );
+}
+
+🧠 Key Points
+
+Context is for global/shared data, not for every small piece of state.
+Examples: theme, user info, language, auth status.
+
+Provider can wrap part of the tree, not just the whole app.
+
+value can be anything: object, string, array, function, etc.
+
+🔁 Example — Theme Switcher
+import React, { createContext, useContext, useState } from "react";
+
+const ThemeContext = createContext();
+
+function App() {
+  const [theme, setTheme] = useState("light");
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar() {
+  return (
+    <div>
+      <ThemeButton />
+    </div>
+  );
+}
+
+function ThemeButton() {
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  return (
+    <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+      Current Theme: {theme}
+    </button>
+  );
+}
+
+
+✅ Here:
+
+ThemeButton can access theme without props from App.
+
+Clicking button toggles the theme globally.
+
+Context API is widely used in modern React apps, especially with auth, theme, language, and global state.

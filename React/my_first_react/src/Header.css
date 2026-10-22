@@ -1,0 +1,36 @@
+nav{
+    margin: 0%;
+    padding: 20px;
+    color: white;
+    background-color: black;
+    text-align: left;
+}
+.HeaderH1{
+    margin-left: 20px;
+    display: inline-block;
+}
+.Menu{
+    display: inline-block;
+    margin-left: 65%;
+}
+li{
+    display: inline-block;
+    padding-left: 10px;
+}
+.Logout{
+    height: 30px;
+    width: 70px;
+    margin-left: 15px;
+    background: rgb(15, 15, 222);
+    color: white;
+    border-radius: 7px;
+}
+.Logout:hover{
+    height: 40px;
+    width: 80px;
+    margin-left: 10px;
+    background: rgb(15, 15, 222);
+    color: white;
+    border-radius: 7px;
+    cursor: pointer;
+}

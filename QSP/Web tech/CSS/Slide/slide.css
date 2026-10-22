@@ -1,0 +1,31 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.outer{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(black,brown,black);
+}
+.inner{
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+}
+img{
+    height: 400px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+}
+img:hover{
+    padding: 0;
+    transition: all 0.3s ease-in;
+    box-shadow: 5px 5px 10px black;
+}
+::-webkit-scrollbar{
+    display: none;
+}

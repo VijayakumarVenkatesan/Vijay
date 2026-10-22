@@ -1,0 +1,52 @@
+ecommerce-backend/
+│
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── example/
+│   │   │           └── ecommerce/
+│   │   │               ├── EcommerceApplication.java
+│   │   │               │
+│   │   │               ├── model/
+│   │   │               │   ├── User.java
+│   │   │               │   ├── Role.java
+│   │   │               │   ├── Product.java
+│   │   │               │   ├── Brand.java
+│   │   │               │   ├── Category.java
+│   │   │               │   ├── CartItem.java
+│   │   │               │   ├── OrderEntity.java
+│   │   │               │   └── OrderItem.java
+│   │   │               │
+│   │   │               ├── repository/
+│   │   │               │   ├── UserRepository.java
+│   │   │               │   ├── ProductRepository.java
+│   │   │               │   ├── BrandRepository.java
+│   │   │               │   ├── CategoryRepository.java
+│   │   │               │   ├── CartItemRepository.java
+│   │   │               │   └── OrderRepository.java
+│   │   │               │
+│   │   │               ├── security/
+│   │   │               │   ├── SecurityConfig.java
+│   │   │               │   ├── JwtFilter.java
+│   │   │               │   ├── JwtUtil.java
+│   │   │               │   └── UserDetailsServiceImpl.java
+│   │   │               │
+│   │   │               ├── controller/
+│   │   │               │   ├── AuthController.java
+│   │   │               │   ├── ProductController.java
+│   │   │               │   ├── CartController.java
+│   │   │               │   └── OrderController.java
+│   │   │               │
+│   │   │               └── bootstrap/
+│   │   │                   └── DataLoader.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── static/        (optional)
+│   │
+│   └── test/
+│       └── java/
+│
+└── README.md   (optional)

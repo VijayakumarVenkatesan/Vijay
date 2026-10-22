@@ -1,0 +1,19 @@
+.calculator{
+    padding-top: 100px;
+    margin: auto;
+}    
+button{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    font-size: larger;
+    border: 0;
+}
+input{
+    width: 100%;
+    font-size: 40px;
+}
+#evaluate{
+    background-color: rgb(49, 49, 132);
+    color: white;
+}

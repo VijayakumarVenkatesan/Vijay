@@ -1,0 +1,138 @@
+🔹 1. Core Spring (commonly used in Spring Boot)
+
+@Component
+	Used to mark class as a spring managed bean.
+
+@Service
+	Specialized component used for business logic.
+
+@Repository
+	Used for persistence layer.
+
+@Controller
+	Handles web request which returns the view.
+
+@RestController
+	Controller which returns the JSON instead of views.
+
+@Autowired
+	Inject beans automatically.
+
+@Qualifier
+	Select beans to inject when more than one beans in same type.
+
+@Primary
+	Marks the bean as default if more than one bean are in same type.
+
+@Configuration
+	Defines the bean manually.
+
+@Bean
+	Mention the method will return bean.
+
+@Value
+	Inject values from application.properties.
+
+@PropertySource
+
+@Profile
+	Active only beans under a profile.
+
+@Scope
+
+@Lazy
+
+
+
+
+
+
+🔹 2. Spring Boot-Specific Annotations
+
+@SpringBootApplication (combo of @Configuration, @EnableAutoConfiguration, @ComponentScan)
+
+@EnableAutoConfiguration
+
+@ConfigurationProperties
+
+@ConditionalOnClass
+
+@ConditionalOnMissingBean
+
+@ConditionalOnProperty
+
+@ConditionalOnResource
+
+@ConditionalOnWebApplication
+
+@ConditionalOnExpression
+
+@ConditionalOnJava
+
+@ConditionalOnCloudPlatform
+
+🔹 3. Spring MVC/Web Annotations (used in Boot projects)
+
+@GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping
+
+@RequestMapping
+
+@RequestBody
+
+@ResponseBody
+
+@RequestParam
+
+@PathVariable
+
+@ModelAttribute
+
+@CrossOrigin
+
+@ExceptionHandler
+
+@ControllerAdvice
+
+@ResponseStatus
+
+🔹 4. Spring Data JPA Annotations
+
+@Entity
+	Defines the class as a table.
+
+@Table
+	Defines the table properties.
+
+@Id
+	Defines the field as a primary key.
+
+@GeneratedValue
+	Make the variable as auto increment generated values.
+
+@Column
+
+@OneToOne, @OneToMany, @ManyToOne, @ManyToMany
+	Defines the relations.
+
+@JoinColumn
+
+@Query
+
+@Transactional
+
+🔹 5. Testing Annotations (Spring Boot Test)
+
+@SpringBootTest
+	Load full context for test.
+
+@WebMvcTest
+	Load controllers for test.
+
+@DataJpaTest
+	Load persistence for test.
+
+@MockBean
+
+@SpyBean
+
+@TestConfiguration

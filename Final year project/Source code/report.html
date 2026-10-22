@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .navbar-custom {
+            background-color: #000;
+        }
+
+        .navbar-custom .nav-link,
+        .navbar-custom .fs-4 {
+            color: white;
+        }
+
+        .navbar-custom .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-0">
+    <header class="navbar-custom d-flex flex-wrap justify-content-center py-3 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" aria-hidden="true">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+            <span class="fs-4">Anti - Money Laundering System</span>
+        </a>
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="/upload" class="nav-link">Upload</a></li>
+            <li class="nav-item"><a href="/fetch" class="nav-link">View</a></li>
+            <li class="nav-item"><a href="/report" class="nav-link active" aria-current="page">Report</a></li>
+            <li class="nav-item"><a href="/visualize" class="nav-link">Visualize</a></li>
+            <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+        </ul>
+    </header>
+</div>
+
+<div class="content-container">
+    <h1>Report Summary</h1>
+
+    {% if suspicious_receivers %}
+        <h2>Suspicious Receivers</h2>
+        <ul>
+        {% for receiver in suspicious_receivers %}
+            <li>{{ receiver }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if suspicious_senders %}
+        <h2>Suspicious Senders</h2>
+        <ul>
+        {% for sender in suspicious_senders %}
+            <li>{{ sender }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Receiver Features</h2>
+        {{ receiver_features | safe }}
+
+    {% if sender_frequency_html %}
+        <h2>Sender Frequency</h2>
+        {{ sender_frequency_html | safe }}
+    {% endif %}
+
+    {% if controller_transactions_html %}
+        <h2>Controller Sender Transactions</h2>
+        {{ controller_transactions_html | safe }}
+    {% endif %}
+</div>
+
+<!-- Common Footer Start -->
+    <footer style="background-color:#222; color:#ddd; padding:20px 10px; text-align:center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size:14px;">
+      <div style="max-width:1200px; margin:0 auto;">
+        <p style="margin:0 0 10px;"> 2024 Anti Money Laundering System.</p>
+        <div style="margin-bottom:10px;">
+          <a href="/" style="color:#ddd; margin: 0 10px; text-decoration:none;">Home</a> |
+          <a href="/upload" style="color:#ddd; margin: 0 10px; text-decoration:none;">Upload</a> |
+          <a href="/fetch" style="color:#ddd; margin: 0 10px; text-decoration:none;">View</a> |
+          <a href="/report" style="color:#ddd; margin: 0 10px; text-decoration:none;">Report</a> |
+          <a href="/visualize" style="color:#ddd; margin: 0 10px; text-decoration:none;">Visualize</a> |
+          <a href="/dashboard" style="color:#ddd; margin: 0 10px; text-decoration:none;">Dashboard</a>
+        </div>
+      </div>
+    </footer>
+    <!-- Common Footer End -->
+
+</body>
+</html>

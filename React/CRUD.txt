@@ -1,0 +1,215 @@
+import React, { useState, useEffect } from "react";
+
+function App() {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [data, setData] = useState([]);
+
+  const [isEdit, setIsEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [buttonText, setButtonText] = useState("Submit");
+
+  useEffect(() => {
+    setButtonText(isEdit ? "Save" : "Submit");
+  }, [isEdit]);
+
+  // 🔹 Handle Submit / Save
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newEntry = { name, age, email, phone, city, isChecked: false };
+
+    if (isEdit) {
+      const updatedData = data.map((item, index) =>
+        index === editIndex ? newEntry : item
+      );
+      setData(updatedData);
+      setIsEdit(false);
+      setEditIndex(null);
+    } else {
+      setData([...data, newEntry]);
+    }
+
+    // Clear inputs
+    setName("");
+    setAge("");
+    setEmail("");
+    setPhone("");
+    setCity("");
+  };
+
+  // 🔹 Handle Edit
+  const handleEdit = (index) => {
+    const item = data[index];
+    setName(item.name);
+    setAge(item.age);
+    setEmail(item.email);
+    setPhone(item.phone);
+    setCity(item.city);
+    setIsEdit(true);
+    setEditIndex(index);
+  };
+
+  // 🔹 Handle Checkbox Toggle
+  const handleCheckbox = (index) => {
+    const updatedData = data.map((item, i) =>
+      i === index ? { ...item, isChecked: !item.isChecked } : item
+    );
+    setData(updatedData);
+  };
+
+  // 🔹 Handle Delete Selected
+  const handleDelete = () => {
+    const filtered = data.filter((item) => !item.isChecked);
+    setData(filtered);
+  };
+
+  // 🔹 Handle Clear All
+  const handleClearAll = () => {
+    if (window.confirm("Are you sure you want to clear all data?")) {
+      setData([]);
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px", display: "flex", gap: "40px" }}>
+      {/* ----------- FORM ----------- */}
+      <div id="forms">
+        <form onSubmit={handleSubmit}>
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Age</td>
+                <td>
+                  <input
+                    type="text"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    required
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Phone</td>
+                <td>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td>
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <button type="submit">{buttonText}</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+
+      {/* ----------- TABLE ----------- */}
+      <div id="table">
+        <table border="1" cellPadding="8">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Edit</th>
+              <th>Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.age}</td>
+                <td>{item.email}</td>
+                <td>{item.phone}</td>
+                <td>{item.city}</td>
+                <td>
+                  <button onClick={() => handleEdit(index)}>Edit</button>
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={item.isChecked}
+                    onChange={() => handleCheckbox(index)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* ----------- ACTION BUTTONS ----------- */}
+        {data.length > 0 && (
+          <div style={{ marginTop: "10px" }}>
+            {data.some((item) => item.isChecked) && (
+              <button
+                onClick={handleDelete}
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  marginRight: "10px",
+                }}
+              >
+                Delete Selected
+              </button>
+            )}
+            <button
+              onClick={handleClearAll}
+              style={{ backgroundColor: "gray", color: "white" }}
+            >
+              Clear All
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;

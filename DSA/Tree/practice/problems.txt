@@ -1,0 +1,661 @@
+template:
+
+    static class Node{
+        int val;
+        Node left;
+        Node right;
+        Node(int val){
+            this.val=val;
+        }
+    }
+
+
+
+
+## 🌳 Level 1 — Tree Basics
+
+1. Maximum Depth of Binary Tree 
+2. Same Tree
+3. Invert Binary Tree
+4. Symmetric Tree — LC 101
+5. Minimum Depth of Binary Tree
+6. Count Complete Tree Nodes
+
+# 🔄 Level 2 — Tree Traversals
+
+### 7. Binary Tree Preorder Traversal — LC 144
+**Description:** Visit nodes in:
+
+**Root → Left → Right**
+
+**Input:**
+```text
+    1
+     \
+      2
+     /
+    3
+```
+
+**Expected Output:**
+```text
+[1, 2, 3]
+```
+
+---
+
+### 8. Binary Tree Inorder Traversal — LC 94
+**Description:** Visit nodes in:
+
+**Left → Root → Right**
+
+**Input:**
+```text
+    1
+     \
+      2
+     /
+    3
+```
+
+**Expected Output:**
+```text
+[1, 3, 2]
+```
+
+---
+
+### 9. Binary Tree Postorder Traversal — LC 145
+**Description:** Visit nodes in:
+
+**Left → Right → Root**
+
+**Input:**
+```text
+    1
+     \
+      2
+     /
+    3
+```
+
+**Expected Output:**
+```text
+[3, 2, 1]
+```
+
+---
+
+### 10. Binary Tree Level Order Traversal — LC 102
+**Description:** Traverse the tree level by level from top to bottom.
+
+**Input:**
+```text
+      3
+     / \
+    9  20
+       / \
+      15  7
+```
+
+**Expected Output:**
+```text
+[[3], [9,20], [15,7]]
+```
+
+---
+
+### 11. Binary Tree Zigzag Level Order Traversal — LC 103
+**Description:** Traverse levels alternately from left-to-right and right-to-left.
+
+**Input:**
+```text
+      3
+     / \
+    9  20
+       / \
+      15  7
+```
+
+**Expected Output:**
+```text
+[[3], [20,9], [15,7]]
+```
+
+---
+
+### 12. Binary Tree Right Side View — LC 199
+**Description:** Return the nodes visible when looking at the tree from the right side.
+
+**Input:**
+```text
+      1
+     / \
+    2   3
+     \   \
+      5   4
+```
+
+**Expected Output:**
+```text
+[1, 3, 4]
+```
+
+---
+
+# 🔥 Level 3 — Important Tree Patterns
+
+### 13. Diameter of Binary Tree — LC 543
+**Description:** Find the longest path between any two nodes. The answer is measured in **edges**.
+
+**Input:**
+```text
+      1
+     / \
+    2   3
+   / \
+  4   5
+```
+
+**Expected Output:**
+```text
+3
+```
+
+Path: `4 → 2 → 1 → 3`
+
+---
+
+### 14. Balanced Binary Tree — LC 110
+**Description:** Check whether the height difference between the left and right subtree of every node is at most 1.
+
+**Input:**
+```text
+    3
+   / \
+  9  20
+     / \
+    15  7
+```
+
+**Expected Output:**
+```text
+true
+```
+
+---
+
+### 15. Path Sum — LC 112
+**Description:** Determine whether there exists a root-to-leaf path whose values add up to `targetSum`.
+
+**Input:**
+```text
+      5
+     / \
+    4   8
+   /   / \
+  11   13 4
+ /  \
+7    2
+
+targetSum = 22
+```
+
+**Expected Output:**
+```text
+true
+```
+
+Because:
+
+`5 → 4 → 11 → 2 = 22`
+
+---
+
+### 16. Path Sum II — LC 113
+**Description:** Return **all root-to-leaf paths** whose sum equals `targetSum`.
+
+**Input:**
+```text
+      5
+     / \
+    4   8
+   /   / \
+  11   13 4
+ /  \     / \
+7    2   5   1
+
+targetSum = 22
+```
+
+**Expected Output:**
+```text
+[[5,4,11,2], [5,8,4,5]]
+```
+
+---
+
+### 17. Sum Root to Leaf Numbers — LC 129
+**Description:** Each root-to-leaf path represents a number. Return the sum of all such numbers.
+
+**Input:**
+```text
+    1
+   / \
+  2   3
+```
+
+Paths:
+
+`1 → 2 = 12`
+
+`1 → 3 = 13`
+
+**Expected Output:**
+```text
+25
+```
+
+---
+
+### 18. Lowest Common Ancestor of Binary Tree — LC 236
+**Description:** Find the lowest node that is an ancestor of both given nodes.
+
+**Input:**
+```text
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+
+p = 5
+q = 1
+```
+
+**Expected Output:**
+```text
+3
+```
+
+---
+
+### 19. Binary Tree Maximum Path Sum — LC 124
+**Description:** Find the maximum possible sum of values along any path in the tree.
+
+**Input:**
+```text
+    -10
+    / \
+   9  20
+      / \
+     15  7
+```
+
+Best path:
+
+`15 → 20 → 7`
+
+**Expected Output:**
+```text
+42
+```
+
+---
+
+### 20. Subtree of Another Tree — LC 572
+**Description:** Determine whether `subRoot` appears as an exact subtree inside `root`.
+
+**Input:**
+```text
+root:
+      3
+     / \
+    4   5
+   / \
+  1   2
+
+subRoot:
+    4
+   / \
+  1   2
+```
+
+**Expected Output:**
+```text
+true
+```
+
+---
+
+# 🌲 Level 4 — Tree Construction
+
+### 21. Construct Binary Tree from Preorder and Inorder — LC 105
+**Description:** Construct the original binary tree using preorder and inorder traversals.
+
+**Input:**
+```text
+preorder = [3,9,20,15,7]
+inorder  = [9,3,15,20,7]
+```
+
+**Expected Output:**
+```text
+      3
+     / \
+    9  20
+       / \
+      15  7
+```
+
+---
+
+### 22. Construct Binary Tree from Inorder and Postorder — LC 106
+**Description:** Construct a binary tree using inorder and postorder traversals.
+
+**Input:**
+```text
+inorder   = [9,3,15,20,7]
+postorder = [9,15,7,20,3]
+```
+
+**Expected Output:**
+```text
+      3
+     / \
+    9  20
+       / \
+      15  7
+```
+
+---
+
+### 23. Serialize and Deserialize Binary Tree — LC 297
+**Description:** Convert a binary tree into a string and reconstruct the exact same tree from that string.
+
+**Input:**
+```text
+    1
+   / \
+  2   3
+     / \
+    4   5
+```
+
+**Expected Output:**
+```text
+Serialized: "1,2,null,null,3,4,null,null,5,null,null"
+
+Deserialized tree:
+    1
+   / \
+  2   3
+     / \
+    4   5
+```
+
+---
+
+### 24. Flatten Binary Tree to Linked List — LC 114
+**Description:** Convert the tree into a linked-list-like structure using only the `right` pointer, following preorder.
+
+**Input:**
+```text
+      1
+     / \
+    2   5
+   / \   \
+  3   4   6
+```
+
+**Expected Output:**
+```text
+1 → 2 → 3 → 4 → 5 → 6
+```
+
+---
+
+# 🌳 Level 5 — BST
+
+### 25. Search in a Binary Search Tree — LC 700
+**Description:** Find a node with a given value in a BST.
+
+**Input:**
+```text
+      4
+     / \
+    2   7
+   / \
+  1   3
+
+target = 2
+```
+
+**Expected Output:**
+```text
+Subtree rooted at 2
+```
+
+---
+
+### 26. Insert into a BST — LC 701
+**Description:** Insert a new value while maintaining the BST property.
+
+**Input:**
+```text
+      4
+     / \
+    2   7
+   / \
+  1   3
+
+value = 5
+```
+
+**Expected Output:**
+```text
+      4
+     / \
+    2   7
+   / \  /
+  1   3 5
+```
+
+---
+
+### 27. Delete Node in a BST — LC 450
+**Description:** Delete a node while keeping the tree a valid BST.
+
+**Input:**
+```text
+      5
+     / \
+    3   6
+   / \   \
+  2   4   7
+
+key = 3
+```
+
+**Expected Output:**
+```text
+      5
+     / \
+    4   6
+   /     \
+  2       7
+```
+
+---
+
+### 28. Validate Binary Search Tree — LC 98
+**Description:** Check whether a binary tree satisfies BST rules: left values are smaller and right values are greater.
+
+**Input:**
+```text
+    2
+   / \
+  1   3
+```
+
+**Expected Output:**
+```text
+true
+```
+
+Example of invalid BST:
+
+```text
+    5
+   / \
+  1   4
+     / \
+    3   6
+```
+
+**Output:**
+```text
+false
+```
+
+---
+
+### 29. Kth Smallest Element in a BST — LC 230
+**Description:** Find the `k`th smallest value in a BST.
+
+**Input:**
+```text
+      3
+     / \
+    1   4
+     \
+      2
+
+k = 1
+```
+
+**Expected Output:**
+```text
+1
+```
+
+For `k = 3`:
+
+```text
+3
+```
+
+💡 **Key pattern:** Inorder traversal of a BST gives sorted order.
+
+---
+
+### 30. Lowest Common Ancestor of BST — LC 235
+**Description:** Find the lowest common ancestor of two nodes in a BST.
+
+**Input:**
+```text
+       6
+      / \
+     2   8
+    / \ / \
+   0  4 7  9
+     / \
+    3   5
+
+p = 2
+q = 8
+```
+
+**Expected Output:**
+```text
+6
+```
+
+---
+
+### 31. Convert Sorted Array to BST — LC 108
+**Description:** Convert a sorted array into a height-balanced BST.
+
+**Input:**
+```text
+[-10, -3, 0, 5, 9]
+```
+
+**Expected Output:**
+```text
+      0
+     / \
+   -3   9
+   /   /
+-10   5
+```
+
+---
+
+### 32. Convert BST to Greater Tree — LC 538
+**Description:** Replace every node's value with the sum of all values greater than or equal to it.
+
+**Input:**
+```text
+    4
+   / \
+  1   6
+```
+
+**Expected Output:**
+```text
+    10
+   /  \
+  11   6
+```
+
+---
+
+## 🎯 Your Tree Practice Order
+
+Don't randomly solve these. Follow this progression:
+
+```text
+                TREES
+                  │
+        ┌─────────┴─────────┐
+        ↓                   ↓
+     Binary Tree           BST
+        │                   │
+   Traversals          Search / Insert
+        │                   │
+   Height / Depth       Validate BST
+        │                   │
+   DFS / BFS             Inorder
+        │                   │
+   Path Problems        Kth Smallest
+        │                   │
+   LCA / Diameter          LCA
+        │
+   Construction
+        │
+   Advanced
+```
+
+### ⭐ Highest-priority problems
+
+If your goal is **interview preparation**, master these first:
+
+| # | Problem | Main Pattern |
+|---|---|---|
+| 1 | Maximum Depth | DFS / Recursion |
+| 2 | Inorder Traversal | DFS |
+| 3 | Level Order | BFS / Queue |
+| 4 | Diameter | DFS + Height |
+| 5 | Balanced Tree | DFS + Height |
+| 6 | Path Sum | DFS |
+| 7 | LCA | DFS |
+| 8 | Maximum Path Sum | DFS |
+| 9 | Validate BST | Inorder / Bounds |
+| 10 | Kth Smallest BST | Inorder |
+| 11 | Construct Tree | Recursion + HashMap |
+| 12 | Serialize/Deserialize | DFS/BFS |
+
+**Best strategy:** Don't just memorize solutions. For each problem, identify **what information the recursive function needs to return**. That's the key to becoming strong at Tree problems.

@@ -1,0 +1,50 @@
+🌳 Core Topics in Trees
+
+1.Tree Traversals
+Preorder, Inorder, Postorder (Recursive + Iterative).
+Level Order Traversal (BFS).
+
+2.Binary Search Tree (BST)
+Insertion, Deletion, Search.
+Min/Max in BST.
+Validate BST.
+
+3.Height / Depth Related
+Height of a tree.
+Diameter of a tree.
+Balanced Binary Tree (check height balance).
+Maximum Depth, Minimum Depth.
+
+4.Lowest Common Ancestor (LCA)
+In Binary Tree.
+In BST.
+
+5.Views of Tree
+Left view, Right view.
+Top view, Bottom view.
+Boundary traversal.
+
+6.Path Problems
+Root-to-leaf path sum.
+Maximum Path Sum in a tree.
+Print all root-to-leaf paths.
+
+7.Transformations & Conversions
+Construct tree from Preorder & Inorder / Postorder & Inorder.
+Convert BST to Balanced BST.
+Flatten Binary Tree to Linked List.
+
+8.Advanced Problems
+Serialize and Deserialize Binary Tree.
+Count nodes in Complete Binary Tree.
+Subtree check (is Subtree of another tree?).
+Mirror / Symmetric Tree.
+
+9.Special Trees
+AVL Tree, Red-Black Tree (theory).
+Segment Tree, Fenwick Tree (BIT).
+Trie (Prefix Tree for strings).
+
+10.Applications
+Huffman Encoding Tree.
+Expression Trees (for arithmetic expressions).

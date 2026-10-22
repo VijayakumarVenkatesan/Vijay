@@ -1,0 +1,49 @@
+{
+  "user": [
+    {
+      "id": "4a7f",
+      "name": "Vijayakumar Venkatesan",
+      "age": "21",
+      "email": "vijayakumarvenkatesan2k4@gmail.com",
+      "phone": "9344710986",
+      "city": "Polur",
+      "isChecked": false
+    },
+    {
+      "id": "7d6f",
+      "name": "Harini",
+      "age": "16",
+      "email": "harini@gmail.com",
+      "phone": "9994245357",
+      "city": "Polur",
+      "isChecked": false
+    },
+    {
+      "name": "Prakash_",
+      "age": "21",
+      "email": "prakashpk@gmail.com",
+      "phone": "1234567890",
+      "city": "TVM",
+      "isChecked": false,
+      "id": "3d90"
+    },
+    {
+      "id": "9903",
+      "name": "Suriyamani",
+      "age": "22",
+      "email": "gsmsuriyamani@gmail.com",
+      "phone": "8610192822",
+      "city": "Polur",
+      "isChecked": false
+    },
+    {
+      "id": "173d",
+      "name": "Vignesh",
+      "age": "21",
+      "email": "vigneshv@gmail.com",
+      "phone": "1234567890",
+      "city": "Chidambaram",
+      "isChecked": false
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.outer{
+    height: 100vh;
+    background-image: linear-gradient(to right,blue,white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inner{
+    background-image: linear-gradient(to right,yellow,red);
+    height: 80%;
+    width: 50%;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 5px 5px 10px gray;
+}
+#burger{
+    height: 50%;
+    position: absolute;
+    left: 40%;
+    top:35%;
+    z-index: 0;
+}
+#drinks{
+    height: 90%;
+    position: absolute;
+    left: 20%;
+    z-index: 1;
+    width: 60%;
+}
+#off{
+    z-index: 2;
+    position: absolute;
+    left: 15%;
+    top: 50%;
+}
+#off:hover{
+    transform: rotate(360deg);
+    transition: all 5s;
+}

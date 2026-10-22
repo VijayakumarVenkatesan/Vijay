@@ -1,0 +1,109 @@
+🧩 What is List Rendering?
+
+In React, you often have arrays of data (like products, users, posts).
+
+List rendering means converting that array into JSX elements so they appear on the screen.
+
+We usually use .map() to iterate over arrays.
+
+⚙️ Basic Example
+function App() {
+  const fruits = ["Apple", "Banana", "Orange"];
+
+  return (
+    <div>
+      <h1>Fruits List</h1>
+      <ul>
+        {fruits.map((fruit, index) => (
+          <li key={index}>{fruit}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+✅ Output:
+
+Fruits List
+- Apple
+- Banana
+- Orange
+
+🧠 Key Points
+
+Use .map() to transform array items into JSX.
+
+Add key prop for each item:
+
+Helps React track elements efficiently when the list changes.
+
+Should be unique (like id) instead of index if possible.
+
+You can render objects, not just strings.
+
+🏷 Rendering Array of Objects
+function App() {
+  const products = [
+    { id: 1, name: "Laptop", price: 50000 },
+    { id: 2, name: "Phone", price: 20000 },
+    { id: 3, name: "Tablet", price: 30000 },
+  ];
+
+  return (
+    <div>
+      <h1>Products</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - ₹{product.price}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+✅ Output:
+
+Products
+- Laptop - ₹50000
+- Phone - ₹20000
+- Tablet - ₹30000
+
+⚡ Rendering Custom Components in a List
+function Product({ product }) {
+  return (
+    <div>
+      <h3>{product.name}</h3>
+      <p>Price: ₹{product.price}</p>
+    </div>
+  );
+}
+
+function App() {
+  const products = [
+    { id: 1, name: "Laptop", price: 50000 },
+    { id: 2, name: "Phone", price: 20000 },
+  ];
+
+  return (
+    <div>
+      {products.map((prod) => (
+        <Product key={prod.id} product={prod} />
+      ))}
+    </div>
+  );
+}
+
+
+✅ Each product is rendered as a separate component, which is cleaner for complex UIs.
+
+🧠 Tips
+
+Always provide key — using index is okay only for static lists.
+
+Avoid using map inside loops unnecessarily — better to prepare data first.
+
+You can combine with conditional rendering to render lists dynamically.

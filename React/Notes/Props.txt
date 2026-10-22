@@ -1,0 +1,9 @@
+Props are way to pass the data from parent component to child component.
+
+PropTypes are the method used to check the types of the received props.
+
+We can set the default value for the props using the default params method
+
+If we want to transfer the state to nested child, we want to drill to child step by step.
+
+This prop drilling is not the good practice, so we use the context api.
